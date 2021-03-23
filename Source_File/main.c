@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<conio.h>
 #include<stdlib.h>
 FILE *f1,*f2;
 int val; //for do..while loop ans
@@ -19,11 +20,11 @@ void displayRecord(){
 	printf("---------------------------------------------------\n");
 	printf("Id First Name        Last Name         Age  Level\n");
 	printf("---------------------------------------------------\n");
-	while(fscanf(f1,"%d %s %s %d %d",&std.id,std.fname,std.lname,&std.age,&std.level)!=EOF){
+	while(fscanf(f1,"%d %s %s %d %d",&std.id,&std.fname,&std.lname,&std.age,&std.level)!=EOF){
 		printf("%2d %-18s %-18s %2d %6d\n",std.id,std.fname,std.lname,std.age,std.level);
 	}
 	printf("Press any key to continue..\n");
-	//getch();
+	getch();
 	fclose(f1);
 }
 
@@ -40,9 +41,9 @@ void writeRecord(){
 		printf("Enter the id of student:");
 		scanf("%d",&std.id);
 		printf("Enter the first name of student:");
-		scanf("%s",std.fname);
+		scanf("%s",&std.fname);
 		printf("Enter the last name of student:");
-		scanf("%s",std.lname);
+		scanf("%s",&std.lname);
 		printf("Enter the age of student:");
 		scanf("%d",&std.age);
 		printf("Enter the level of student:");
@@ -76,9 +77,9 @@ void addRecord(){
 		printf("Enter the id of student:");
 		scanf("%d",&std.id);
 		printf("Enter the first name of student:");
-		scanf("%s",std.fname);
+		scanf("%s",&std.fname);
 		printf("Enter the last name of student:");
-		scanf("%s",std.lname);
+		scanf("%s",&std.lname);
 		printf("Enter the age of student:");
 		scanf("%d",&std.age);
 		printf("Enter the level of student:");
@@ -99,7 +100,38 @@ void addRecord(){
 
 //update record
 void updateRecord(){
-
+	int id;
+	displayRecord();
+	f1=fopen("studentDetail.txt","r"); //opening file in apoend mode
+	f2=fopen("temp.txt","w");//temporary write file
+	student std; //defining structure varaible
+	if(f1==NULL){
+		printf("File creation error");
+		exit(1);
+	}
+	printf("Enter the id of a student to delete:");
+	scanf("%d",&id);
+	while(fscanf(f1,"%d %s %s %d %d",&std.id,&std.fname,&std.lname,&std.age,&std.level)!=EOF){
+		if(std.id==id){
+			printf("Enter the id of student:");
+			scanf("%d",&std.id);
+			printf("Enter the first name of student:");
+			scanf("%s",&std.fname);
+			printf("Enter the last name of student:");
+			scanf("%s",&std.lname);
+			printf("Enter the age of student:");
+			scanf("%d",&std.age);
+			printf("Enter the level of student:");
+			scanf("%d",&std.level);
+			fprintf(f2,"%d %s %s %d %d\n",std.id,std.fname,std.lname,std.age,std.level);
+			continue;
+		}
+		fprintf(f2,"%d %s %s %d %d\n",std.id,std.fname,std.lname,std.age,std.level);
+	}
+	fclose(f1);
+	fclose(f2);
+	int a=remove("studentDetail.txt");
+	int b=rename("temp.txt","studentDetail.txt");
 
 }
 
@@ -116,7 +148,7 @@ void deleteRecord(){
 	}
 	printf("Enter the id of a student to delete:");
 	scanf("%d",&id);
-	while(fscanf(f1,"%d %s %s %d %d",&std.id,std.fname,std.lname,&std.age,&std.level)!=EOF){
+	while(fscanf(f1,"%d %s %s %d %d",&std.id,&std.fname,&std.lname,&std.age,&std.level)!=EOF){
 		if(std.id==id){
 			printf("Successfully deleted.");
 			continue;
@@ -171,7 +203,7 @@ void switchFunc(int n){
 			break;
 		case 6:
 			printf("Enter any key to exit...");
-			//getch();
+			getch();
 			printf("Exiting from the program..");
 			exit(1);
 		default:
@@ -206,5 +238,3 @@ void main(){
 	displayMenu();
 	fclose(f1);
 }
-
-
